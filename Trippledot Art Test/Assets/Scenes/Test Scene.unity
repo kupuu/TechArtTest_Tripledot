@@ -5131,6 +5131,14 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8508685680719201128, guid: 53926b3ed17d0d6439e472223177af3b, type: 3}
+      propertyPath: blurMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 247ce1f56f380b44c8ddb94481de23fd, type: 2}
+    - target: {fileID: 8513870187536050650, guid: 53926b3ed17d0d6439e472223177af3b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8528619463045223272, guid: 53926b3ed17d0d6439e472223177af3b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

@@ -69,7 +69,6 @@ Shader "Custom/Blur"
                 col += tex2D(_MainTex, uv - float2(offset.x, 0)) * 0.125;
                 col += tex2D(_MainTex, uv + float2(0, offset.y)) * 0.125;
                 col += tex2D(_MainTex, uv - float2(0, offset.y)) * 0.125;
-
                 col += tex2D(_MainTex, uv + offset.xy) * 0.1;
                 col += tex2D(_MainTex, uv - offset.xy) * 0.1;
                 col += tex2D(_MainTex, uv + float2(-offset.x, offset.y)) * 0.1;

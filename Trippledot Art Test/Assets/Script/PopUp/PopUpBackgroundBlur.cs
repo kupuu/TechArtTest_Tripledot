@@ -4,28 +4,42 @@ using UnityEngine.UI;
 public class PopUpBackgroundBlur : MonoBehaviour
 {
     [SerializeField] private RawImage blurredBackground;
+    [SerializeField] private Material blurMat;
 
     private Camera cam;
-    private RenderTexture rt;
+    private RenderTexture capture;
+    private RenderTexture blurPass;
+    private int captureWidth;
+    private int captureHeight;
+    private const int resolutionDownsampleAmount = 4;
 
-    private void Awake()
+    private void Start()
     {
         cam = Camera.main;
+        captureWidth = Screen.width / resolutionDownsampleAmount;
+        captureHeight = Screen.height / resolutionDownsampleAmount;
     }
 
     private void OnEnable()
     {
         PopUp_OnOpen.OnPopUpOpen += CaptureCameraToRenderTexture;
+        PopUp_OnClosed.OnPopUpClosed += ReleaseAllRT;
     }
 
     private void OnDisable()
     {
         PopUp_OnOpen.OnPopUpOpen -= CaptureCameraToRenderTexture;
-        ReleaseCapturedRenderTexture();
+        PopUp_OnClosed.OnPopUpClosed -= ReleaseAllRT;
     }
 
-    private void ReleaseCapturedRenderTexture()
+    private void ReleaseAllRT()
     {
+        ReleaseRT(capture);
+        ReleaseRT(blurPass);
+    }
+
+    private void ReleaseRT(RenderTexture rt)
+    {        
         if (rt != null)
         {
             if (rt.IsCreated())
@@ -39,23 +53,28 @@ public class PopUpBackgroundBlur : MonoBehaviour
 
     private void CaptureCameraToRenderTexture()
     {
-        if (cam == null || blurredBackground == null)
+        if (cam == null || blurredBackground == null || blurMat == null)
         {
             return;
         }
 
-        ReleaseCapturedRenderTexture();
+        ReleaseAllRT();
 
-        rt = new RenderTexture(Screen.width / 4, Screen.height / 4, 0, RenderTextureFormat.ARGB32);
-        rt.depthStencilFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.D16_UNorm;
-        rt.useMipMap = false;
-        rt.autoGenerateMips = false;
-        rt.filterMode = FilterMode.Bilinear;
+        capture = new RenderTexture(captureWidth, captureHeight, 0, RenderTextureFormat.ARGB32);
+        capture.depthStencilFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.D16_UNorm;
+        capture.useMipMap = false;
+        capture.autoGenerateMips = false;
+        capture.filterMode = FilterMode.Bilinear;
 
-        rt.Create();
-        cam.targetTexture = rt;
+        capture.Create();
+        cam.targetTexture = capture;
         cam.Render();
         cam.targetTexture = null;
-        blurredBackground.texture = rt;
+
+        blurPass = new RenderTexture(capture);
+        Graphics.Blit(capture, blurPass, blurMat);
+        blurredBackground.texture = blurPass;
+
+        ReleaseRT(capture);
     }
 }

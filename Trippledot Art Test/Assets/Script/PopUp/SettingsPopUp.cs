@@ -2,23 +2,20 @@ using UnityEngine;
 
 public class SettingsPopUp : MonoBehaviour, IPopUp
 {
-    [SerializeField] private Animator popUpAnimator;
-  
-    private readonly int openHash = Animator.StringToHash("Open");
-    private readonly int closeHash = Animator.StringToHash("Close");
-
+    [SerializeField] private Animator popUpAnimator;  
+    private readonly int isOpenHash = Animator.StringToHash("isOpen");
     private bool isOpen = false;
 
     public void Show()
     {
         isOpen = true;
-        popUpAnimator.SetTrigger(openHash);
+        popUpAnimator.SetBool(isOpenHash, isOpen);
     }
 
     public void Hide()
     {
         isOpen = false;
-        popUpAnimator.SetTrigger(closeHash);    
+        popUpAnimator.SetBool(isOpenHash, isOpen);    
     } 
     
     public void TogglePopUp()

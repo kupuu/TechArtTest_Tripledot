@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI_ScrollingBackground
+  m_Name: mat_UI_ScrollingBackground
   m_Shader: {fileID: -6465566751694194690, guid: 04f1328c2763b0145a3b46b9f694c442, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
